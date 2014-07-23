@@ -1,0 +1,45 @@
+# Vagrantfile
+
+VAGRANTFILE_API_VERSION = "2"
+
+box      = 'ubuntu/trusty64'
+hostname = 'weblab.fake.org'
+ip       = '192.168.100.51'
+ram      = '2048'
+cpu      = '2'
+
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # Box conf
+  config.vm.box = box
+  config.vm.host_name = hostname
+
+  # Network conf
+  config.vm.network :private_network, ip: ip
+
+  # Ports
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
+
+  # Provider conf
+  config.vm.provider :virtualbox do |vb|
+    vb.customize [
+      "modifyvm", :id,
+      "--memory", ram,
+      "--cpus", cpu,
+      "--ioapic", "on",
+    ]
+  end
+
+  # Ansible all the things!
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../main.yml"
+    ansible.inventory_path = "../dummy"
+    ansible.verbose = "v"
+    ansible.host_key_checking = false
+
+    # Check this https://github.com/mitchellh/vagrant/issues/3096
+    ansible.limit = 'local'
+  end
+
+end

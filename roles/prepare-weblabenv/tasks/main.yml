@@ -1,0 +1,30 @@
+---
+
+
+- name: Clone weblab
+  git: repo={{ url }}
+       dest={{ path }}
+  tags:
+    - git
+    - clone
+    - pull
+    - weblab
+
+- name: create virtualenv folder
+  file: path=~/.virtualenvs
+        state=directory
+  tags:
+    - virtualenv
+    - create
+    - folder
+
+- name: Install app
+  pip:
+    virtualenv: "{{ virtualenv_path }}"
+    name: "{{ path }}"
+    #chdir: ~/weblab
+  sudo: True
+  tags:
+    - virtualenvs
+    - pip
+    - weblab
