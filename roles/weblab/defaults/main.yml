@@ -1,9 +1,3 @@
 ---
 
-path: "/home/vagrant/weblab"
-
-virtualenv_name: "weblab"
-virtualenvwrapper_path: "/home/vagrant/.virtualenvs"
-virtualenv_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"
-
 ansible_python_interpreter: "/home/vagrant/.virtualenvs/weblab/bin/python"
