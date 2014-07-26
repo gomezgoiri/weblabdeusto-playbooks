@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network :private_network, ip: ip
 
   # Ports
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.network :forwarded_port, guest: 80, host: 8000
 
   # Provider conf
   config.vm.provider :virtualbox do |vb|
@@ -34,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Ansible all the things!
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "../main.yml"
-    ansible.inventory_path = "../dummy"
+    ansible.inventory_path = "../simple"
     ansible.verbose = "v"
     ansible.host_key_checking = false
 

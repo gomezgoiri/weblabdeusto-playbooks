@@ -39,7 +39,8 @@
 - name: Create weblab-deusto instance
   hosts: web
   roles:
-    - weblab
+    - weblab-apache
+    # replace by weblab-simple if you prefer a simpler WebLab installation
   tags:
     - weblab
     - instance
