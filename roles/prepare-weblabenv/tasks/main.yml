@@ -20,7 +20,7 @@
 
 - name: Install app
   pip:
-    virtualenv: "{{ virtualenv_path }}"
+    virtualenv: "{{ virtualenv_weblab_path }}"
     name: "{{ path }}"
     #chdir: ~/weblab
   sudo: True
