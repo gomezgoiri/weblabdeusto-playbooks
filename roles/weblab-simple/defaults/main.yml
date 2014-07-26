@@ -1,0 +1,4 @@
+---
+
+ansible_python_interpreter: "/home/vagrant/.virtualenvs/weblab/bin/python"
+weblab_installation_path: "/home/vagrant/example"

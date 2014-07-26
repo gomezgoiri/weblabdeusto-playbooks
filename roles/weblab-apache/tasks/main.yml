@@ -1,0 +1,57 @@
+---
+
+
+#- name: Apache2 installation
+  #apt:
+    #pkg: "{{ item }}"
+    #state: present
+  #sudo: True
+  
+  #when: ansible_os_family == "Debian"
+  #with_items:
+    #- apache2
+    #- apache2-mpm-worker
+
+
+- name: Create weblab instance
+  # dummy server
+  shell: "./weblab-admin.py create {{weblab_installation_path}}"
+  args:
+    chdir: "{{virtualenv_weblab_path}}/bin"
+  tags:
+    - creation
+    - weblab
+    - instance
+
+
+- name: Copy weblab instance
+  shell: "cp {{weblab_installation_path}}/httpd/apache_weblab_generic.conf /etc/apache2/conf-available/"
+        #owner=foo group=foo mode=0644
+  sudo: True
+  tags:
+    - copy
+    - apache
+    - configuration
+
+
+- name: Enable the configuration
+  # dummy server
+  shell: "a2enconf apache_weblab_generic"
+  sudo: True
+  notify:
+    - restart apache
+  tags:
+    - apache
+    - configuration
+    - a2enconf
+
+    
+- name: Install apache2 header module
+  shell: "a2enmod proxy proxy_balancer proxy_http headers lbmethod_bybusyness"
+  sudo: True
+  notify:
+    - restart apache
+  tags:
+    - apache
+    - a2enconf
+    - headers

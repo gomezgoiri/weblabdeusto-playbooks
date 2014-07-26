@@ -1,0 +1,12 @@
+---
+
+
+- name: Create weblab instance
+  # dummy server
+  shell: "./weblab-admin.py create {{weblab_installation_path}} --http-server-port=8000"
+  args:
+    chdir: "{{virtualenv_weblab_path}}/bin"
+  tags:
+    - creation
+    - weblab
+    - instance
