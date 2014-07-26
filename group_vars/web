@@ -7,4 +7,4 @@ path: "/home/vagrant/weblab"
 
 virtualenv_name: "weblab"
 virtualenvwrapper_path: "/home/vagrant/.virtualenvs"
-virtualenv_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"
+virtualenv_weblab_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"
