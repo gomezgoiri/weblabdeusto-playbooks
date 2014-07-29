@@ -3,4 +3,5 @@
 python_interpreter: "{{virtualenv_weblab_path}}/bin/python"
 weblab_installation_path: "/home/{{remote_user}}/example"
 
+daemon_conf_file: "/etc/init/weblab.conf"
 apache_conf_file: "{{weblab_installation_path}}/httpd/apache_weblab_generic.conf"

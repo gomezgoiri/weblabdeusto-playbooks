@@ -21,6 +21,7 @@
 
 - name: Delete posibly existing weblab instance
   file:  path={{weblab_installation_path}} state=absent
+  # CAUTION: if the weblab_installation_path is removed and no conf file is created afterwards, apache2 might fail in the next restart
   tags:
     - clean
     - weblab
@@ -28,19 +29,77 @@
 
 
 - name: Create weblab instance
-  # dummy server
-  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}}"
+  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}} --coordination-engine=redis"
   args:
     chdir: "{{virtualenv_weblab_path}}/bin"
+  notify:
+    - restart weblab
   tags:
     - creation
     - weblab
     - instance
 
 
-- name: Copy weblab instance
-  shell: "cp {{weblab_installation_path}}/httpd/apache_weblab_generic.conf /etc/apache2/conf-available/"
-        #owner=foo group=foo mode=0644
+- name: Copy weblab daemon configuration file
+  copy: src=weblab.conf dest="{{daemon_conf_file}}" # owner=foo group=foo mode=0644
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - copy
+    - configuration
+    - weblab
+
+
+- name: Replace PYTHON_HOME in daemon with the proper path
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{pyhome\}\}" replace="{{virtualenv_weblab_path}}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - weblab
+
+
+- name: Replace the path of the weblab instance
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{instancedir\}\}" replace="{{weblab_installation_path}}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - weblab
+    - instance
+
+
+- name: Replace the user which executes the upstart daemon
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{execuser\}\}" replace="{{remote_user}}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - weblab
+    - instance
+
+
+# TODO Consider using Systemd
+# Apparently, even Ubuntu plans to stop using Upstream
+- name: Reload configuration for daemons
+  shell: "initctl reload-configuration"
+  sudo: True
+  tags:
+    - initctl
+    - reload
+    - configuration
+    - daemon
+
+
+- name: Create symbolic link for weblab instance configuration for Apache
+  file: src="{{weblab_installation_path}}/httpd/apache_weblab_generic.conf" dest="/etc/apache2/conf-available/weblab.conf" state=link
   sudo: True
   tags:
     - copy
@@ -48,24 +107,16 @@
     - configuration
 
 
-- name: Enable the configuration
-  # dummy server
-  shell: "a2enconf apache_weblab_generic"
+- name: Enable Weblab in Apache2 and install the needed modules
+  shell: "{{item}}"
+  with_items:
+    - a2enconf weblab
+    - a2enmod proxy proxy_balancer proxy_http headers lbmethod_bybusyness
   sudo: True
   notify:
     - restart apache
+    - restart weblab
   tags:
     - apache
     - configuration
     - a2enconf
-
-    
-- name: Install apache2 header module
-  shell: "a2enmod proxy proxy_balancer proxy_http headers lbmethod_bybusyness"
-  sudo: True
-  notify:
-    - restart apache
-  tags:
-    - apache
-    - a2enconf
-    - headers
