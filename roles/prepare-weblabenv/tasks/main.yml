@@ -23,8 +23,20 @@
     virtualenv: "{{ virtualenv_weblab_path }}"
     name: "{{ path }}"
     #chdir: ~/weblab
-  sudo: True
   tags:
-    - virtualenvs
+    - virtualenv
     - pip
     - weblab
+
+- name: Execution permissions for bin
+  # I don't know why, activation scripts are now executable by default
+  file: path="{{ virtualenv_weblab_path }}/bin/{{ item }}" mode=0754
+  with_items:
+    - activate
+    - activate.csh
+    - activate.fish
+    - activate_this.py
+  tags:
+    - virtualenv
+    - activate
+    - permission
