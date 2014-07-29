@@ -1,8 +1,6 @@
 ---
 
-#ansible_python_interpreter: "{{virtualenv_weblab_path}}/bin/python" # I don't know why it does not work
-ansible_python_interpreter: "/home/vagrant/.virtualenvs/weblab/bin/python"
+python_interpreter: "{{virtualenv_weblab_path}}/bin/python"
 weblab_installation_path: "/home/{{remote_user}}/example"
-
 
 apache_conf_file: "{{weblab_installation_path}}/httpd/apache_weblab_generic.conf"

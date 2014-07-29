@@ -1,26 +1,26 @@
 ---
 
-# Not sure why it doesn't work here (but it does in "common" role!)
-#- name: Apache2 installation
-  #apt:
-    #pkg: "{{ item }}"
-    #state: present
-  #sudo: true
-  #when: ansible_os_family == "Debian"
-  #with_items:
-    #- apache2
-    #- apache2-mpm-worker
-  #tags:
-    #- apt
-    #- installation
-    #- install
-    #- debian
-    #- apache
-    #- apache2
+- name: Apache2 installation
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  
+  when: ansible_os_family == "Debian"
+  with_items:
+    - apache2
+    - apache2-mpm-worker
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - apache
+    - apache2
 
 
 - name: Delete posibly existing weblab instance
-  shell: "rm -r {{weblab_installation_path}}"
+  file:  path={{weblab_installation_path}} state=absent
   tags:
     - clean
     - weblab
@@ -29,7 +29,7 @@
 
 - name: Create weblab instance
   # dummy server
-  shell: "./weblab-admin.py create {{weblab_installation_path}}"
+  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}}"
   args:
     chdir: "{{virtualenv_weblab_path}}/bin"
   tags:
