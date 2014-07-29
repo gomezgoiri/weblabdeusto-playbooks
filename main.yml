@@ -10,6 +10,14 @@
     - pre
     - common
 
+- name: Install Redis
+  hosts: scheduling
+  roles:
+    - scheduling-redis
+  tags:
+    - redis
+    - scheduling
+
 - name: Install virtualenv
   hosts: web
   sudo: true

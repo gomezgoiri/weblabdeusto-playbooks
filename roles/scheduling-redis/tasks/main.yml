@@ -1,0 +1,17 @@
+---
+
+- name: Redis installation
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  
+  when: ansible_os_family == "Debian"
+  with_items:
+    - redis-server
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - redis

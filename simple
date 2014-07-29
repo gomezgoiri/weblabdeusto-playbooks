@@ -6,6 +6,9 @@ weblab.fake.org ansible_ssh_host=192.168.100.51
 [web]
 weblab.fake.org
 
+[scheduling]
+weblab.fake.org
+
 [db]
 weblab.fake.org
 
@@ -13,4 +16,5 @@ weblab.fake.org
 # Our env group is local
 [local:children]
 web
+scheduling
 db
