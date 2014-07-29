@@ -5,7 +5,7 @@
   when: ansible_os_family == "Debian"
 
 
-# This should be done in each role, but I don't know why it does not work in other roles yet.
+# TODO This should be done in each role to avoid installing openjdk and other Weblab dependencies in the scheduler.
 - name: Bulk dependency installation
   apt:
     pkg: "{{ item }}"
