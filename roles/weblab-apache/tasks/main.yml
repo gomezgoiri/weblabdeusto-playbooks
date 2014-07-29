@@ -1,16 +1,30 @@
 ---
 
-
+# Not sure why it doesn't work here (but it does in "common" role!)
 #- name: Apache2 installation
   #apt:
     #pkg: "{{ item }}"
     #state: present
-  #sudo: True
-  
+  #sudo: true
   #when: ansible_os_family == "Debian"
   #with_items:
     #- apache2
     #- apache2-mpm-worker
+  #tags:
+    #- apt
+    #- installation
+    #- install
+    #- debian
+    #- apache
+    #- apache2
+
+
+- name: Delete posibly existing weblab instance
+  shell: "rm -r {{weblab_installation_path}}"
+  tags:
+    - clean
+    - weblab
+    - instance
 
 
 - name: Create weblab instance

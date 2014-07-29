@@ -3,8 +3,8 @@ virtualenv_version: 1.11.6
 
 
 # Details for weblab installation
-path: "/home/vagrant/weblab"
+path: "/home/{{remote_user}}/weblab"
 
 virtualenv_name: "weblab"
-virtualenvwrapper_path: "/home/vagrant/.virtualenvs"
+virtualenvwrapper_path: "/home/{{remote_user}}/.virtualenvs"
 virtualenv_weblab_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"

@@ -5,6 +5,8 @@
   apt: update_cache=yes
   when: ansible_os_family == "Debian"
 
+
+# This should be done in each role, but I don't know why it does not work in other roles yet.
 - name: Bulk dependency installation
   apt:
     pkg: "{{ item }}"
