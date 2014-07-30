@@ -1,0 +1,41 @@
+---
+
+- name: MySQL installation
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  with_items:
+    - mysql-server
+    - python-mysqldb
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - mysql
+
+
+- name: Create database for WebLab
+  mysql_db: name="{{ db_name }}" state=present
+  tags:
+    - mysql
+    - database
+    - weblab
+    - creation
+    - create
+
+
+- name: Create user for WebLab database
+  mysql_user:
+    name="{{ db_user }}"
+    password="{{ db_password }}"
+    priv="{{ db_name }}.*:ALL"
+    state=present
+  tags:
+    - mysql
+    - user
+    - weblab
+    - creation
+    - create

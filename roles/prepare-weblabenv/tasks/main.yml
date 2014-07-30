@@ -21,6 +21,8 @@
 - name: Install app
   pip:
     virtualenv: "{{ virtualenv_weblab_path }}"
+    # it will inherit packages from the global site-packages 
+    virtualenv_site_packages: yes
     name: "{{ path }}"
     #chdir: ~/weblab
   tags:

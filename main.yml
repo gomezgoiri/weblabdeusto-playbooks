@@ -18,6 +18,14 @@
     - redis
     - scheduling
 
+- name: Install MySQL
+  hosts: db
+  roles:
+    - persistence-mysql
+  tags:
+    - mysql
+    - persistence
+
 - name: Install virtualenv
   hosts: web
   sudo: true

@@ -10,6 +10,7 @@
   with_items:
     - apache2
     - apache2-mpm-worker
+    - python-mysqldb
   tags:
     - apt
     - installation
@@ -29,7 +30,7 @@
 
 
 - name: Create weblab instance
-  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}} --coordination-engine=redis"
+  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}} --coordination-engine=redis --db-engine=mysql --db-name=MyWebLab --db-user=weblabdbuser --db-passwd=wpasswd"
   args:
     chdir: "{{virtualenv_weblab_path}}/bin"
   notify:
