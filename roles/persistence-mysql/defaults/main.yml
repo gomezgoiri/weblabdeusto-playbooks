@@ -1,7 +1,0 @@
----
-
-db_name: "MyWebLab"
-db_user: "weblabdbuser"
-
-# NOTE: If you plan to use this installation seriously, please change the password and consider using Vault if you will version the resulting plan
-db_password: "wpasswd"

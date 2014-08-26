@@ -23,3 +23,14 @@
     - installation
     - install
     - debian
+
+# Because 127.0.1.1 causes problems with mysql_client when trying to connect to the local MySQL server
+# http://askubuntu.com/questions/39682/changing-127-0-1-1-back-to-127-0-0-1-will-it-break-anything-in-unity
+- name: Change the local address for the hostname
+  replace: dest=/etc/hosts regexp="^127\.0\.1\.1 " replace="127.0.0.1 " backup=yes
+  sudo: True
+  tags:
+    - hostname
+    - configuration
+    - file
+    - localhost

@@ -5,3 +5,12 @@
 remote_user: "vagrant" # By default this is "vagrant," since that is what most public boxes are made as.
 ansible_ssh_user: "vagrant" # needed to be this
 ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
+
+
+
+# Variables used both in "db" and "web" roles (they are server and client respectively)
+db_name: "MyWebLab"
+db_user: "weblabdbuser"
+
+# NOTE: If you plan to use this installation seriously, please change the password and consider using Vault if you will version the resulting plan
+db_password: "wpasswd"
