@@ -28,3 +28,10 @@ __Assumption__: you have a machine equivalent to the one created by vagrant in t
     ansible-playbook -vvvv -u vagrant --private-key=~/.vagrant.d/insecure_private_key -i simple --limit='local' main.yml --tags weblab
 
 I will try to adhere to Ansible's [best practices](http://docs.ansible.com/playbooks_best_practices.html#content-organization) in the project organization. Therefore, [these usage patterns](http://docs.ansible.com/playbooks_best_practices.html#what-this-organization-enables-examples) should be applicable once the playbook is finished.
+
+
+## Notes
+
+If you are going to fork this and parametrize it with your own installation details, please make sure that either you don't version the resulting file or you use vault for the passwords.
+
+For example, the file with the "global" variables (group_vars/local) stores a default database password.
