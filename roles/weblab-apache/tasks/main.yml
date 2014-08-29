@@ -31,7 +31,7 @@
 
 # TODO We should ensure that only a host is present in "db group" otherwise, the first one will be selected
 - name: Create weblab instance
-  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}} --coordination-engine=redis --db-engine=mysql --db-host={{groups['db'][0]}} --db-name={{db_name}} --db-user={{db_user}} --db-passwd={{db_password}}"
+  shell: "{{python_interpreter}} ./weblab-admin.py create {{weblab_installation_path}} --coordination-engine=redis --coordination-db-host={{groups['scheduling'][0]}} --db-engine=mysql --db-host={{groups['db'][0]}} --db-name={{db_name}} --db-user={{db_user}} --db-passwd={{db_password}}"
   args:
     chdir: "{{virtualenv_weblab_path}}/bin"
   notify:
