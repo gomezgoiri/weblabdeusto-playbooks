@@ -1,70 +1,67 @@
 # Vagrantfile
 
 VAGRANTFILE_API_VERSION = "2"
+box = "ubuntu/trusty64"
+hostname = ".weblab.fake.org"
 
-box      = 'ubuntu/trusty64'
-ram      = '2048'
-cpu      = '2'
-
-
-def configure(ansible)
-    ansible.playbook = "../../main.yml"
-    ansible.inventory_path = "../../one_role_one_machine"
-    ansible.verbose = "v"
-    ansible.host_key_checking = false
-    ansible.limit = 'local'
-end
+machines = [
+  {
+    "hostname"=> "web" + hostname,
+    "ip"=> "192.168.100.52",
+    "box"=> box,
+    "mem"=> 1024, # to complile weblab client
+    "cpu"=> 2,
+    "ports"=> [
+      [80, 8000], # Apache
+    ]
+  },
+  {
+    "hostname"=> "scheduler" + hostname,
+    "ip"=> "192.168.100.53",
+    "box"=> box,
+    "mem"=> 512,
+    "cpu"=> 2,
+    "ports"=> []
+  },
+  {
+    "hostname"=> "db" + hostname,
+    "ip"=> "192.168.100.54",
+    "box"=> box,
+    "mem"=> 512,
+    "cpu"=> 2,
+    "ports"=> []
+  }
+]
 
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
-  config.vm.box = box # Box conf
   
-  # Provider conf
-  config.vm.provider :virtualbox do |vb|
-    vb.customize [
-      "modifyvm", :id,
-      "--memory", ram,
-      "--cpus", cpu,
-      "--ioapic", "on",
-    ]
-  end
-  
-  
-  config.vm.define 'web' do |machine|
-  
-    machine.vm.hostname = 'web.weblab.fake.org'
-    machine.vm.network "private_network", ip: "192.168.100.52"
-    machine.vm.network :forwarded_port, guest: 80, host: 8000
-    
-    machine.vm.provision "ansible" do |ansible|
-      configure(ansible)
+  machines.each do |i|
+    config.vm.define i["hostname"] do |machine|
+      machine.vm.box = i["box"]
+      machine.vm.host_name = i["hostname"]
+      machine.vm.network :private_network, ip: i["ip"]
+      
+      i["ports"].each do |port|
+        machine.vm.network :forwarded_port, guest: port[0], host: port[1]
+      end
+      
+      machine.vm.provider :virtualbox do |vb|
+        vb.customize [
+          "modifyvm", :id,
+          "--memory", i["mem"],
+          "--cpus", i["cpu"],
+          "--ioapic", "on",
+        ]
+      end
+      
+#      machine.vm.provision "ansible" do |ansible|
+#	ansible.playbook = "../../main.yml"
+#	ansible.inventory_path = "../../one_role_one_machine"
+#	ansible.verbose = "vvvv"
+#	ansible.host_key_checking = false
+#	ansible.limit = "local"
+#      end
     end
-    
   end
-  
-  
-  config.vm.define 'scheduler' do |machine|
-  
-    machine.vm.hostname = 'scheduler.weblab.fake.org'
-    machine.vm.network "private_network", ip: "192.168.100.53"
-    
-    machine.vm.provision "ansible" do |ansible|
-      configure(ansible)
-    end
-    
-  end
-  
-  
-  config.vm.define 'db' do |machine|
-  
-    machine.vm.hostname = 'db.weblab.fake.org'
-    machine.vm.network "private_network", ip: "192.168.100.54"
-    
-    machine.vm.provision "ansible" do |ansible|
-      configure(ansible)
-    end
-    
-  end
-  
 end
