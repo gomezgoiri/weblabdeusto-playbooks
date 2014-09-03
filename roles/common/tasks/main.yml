@@ -10,14 +10,11 @@
   apt:
     pkg: "{{ item }}"
     state: present
-
   when: ansible_os_family == "Debian"
   with_items:
     - python-dev
     - python
     - python-pip
-    - openjdk-6-jdk
-    - git
   tags:
     - apt
     - installation
