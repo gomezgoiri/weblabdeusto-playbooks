@@ -15,6 +15,15 @@
     - redis
 
 
+- name: Serve to other machines
+  replace: dest=/etc/redis/redis.conf regexp="^bind 127.0.0.1$" replace="bind 0.0.0.0"
+  sudo: True
+  tags:
+    - redis
+    - configuration
+    - file
+
+
 - name: Avoid storing anything in disk to reduce latency
   replace: dest=/etc/redis/redis.conf regexp="^{{ item }}$" replace="#{{ item }}"
   with_items:
