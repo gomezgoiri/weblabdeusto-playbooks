@@ -1,5 +1,23 @@
 ---
 
+- name: Install Git and Java
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  when: ansible_os_family == "Debian"
+  with_items:
+    - openjdk-6-jdk
+    - git
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - git
+    - java
+    - openjdk-6-jdk
+
 
 - name: Clone weblab
   git: repo={{ url }}
@@ -10,6 +28,7 @@
     - pull
     - weblab
 
+
 - name: create virtualenv folder
   file: path=~/.virtualenvs
         state=directory
@@ -17,6 +36,7 @@
     - virtualenv
     - create
     - folder
+
 
 - name: Install app
   pip:
