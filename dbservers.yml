@@ -1,0 +1,20 @@
+---
+
+# file: dbservers.yml
+
+- name: Common tasks in all servers
+  hosts: db
+  sudo: true
+  roles:
+    - common
+  tags:
+    - pre
+    - common
+
+- name: Install MySQL
+  hosts: db
+  roles:
+    - persistence-mysql
+  tags:
+    - mysql
+    - persistence

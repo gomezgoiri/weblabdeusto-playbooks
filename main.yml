@@ -1,62 +1,15 @@
 ---
 
-
-- name: Common tasks in all servers
+- name: Set hostnames
   hosts: all
   sudo: true
   roles:
-    - common
+    - { role: ansible-hosts, iface: 'eth1' }
   tags:
-    - pre
-    - common
+    - hostname
 
-- name: Install Redis
-  hosts: scheduling
-  roles:
-    - scheduling-redis
-  tags:
-    - redis
-    - scheduling
 
-- name: Install MySQL
-  hosts: db
-  roles:
-    - persistence-mysql
-  tags:
-    - mysql
-    - persistence
-
-- name: Install virtualenv
-  hosts: web
-  sudo: true
-  roles:
-    - brad.virtualenv
-  tags:
-    - python
-    - virtualenv
-
-- name: Install virtualenvwrapper
-  hosts: web
-  sudo: true
-  roles:
-    - virtualenvwrapper
-  tags:
-    - python
-    - virtualenvwrapper
-
-- name: Install weblab-deusto
-  hosts: web
-  roles:
-    - prepare-weblabenv
-  tags:
-    - weblab
-    - install
-
-- name: Create weblab-deusto instance
-  hosts: web
-  roles:
-    - weblab-apache
-    # replace by weblab-simple if you prefer a simpler WebLab installation
-  tags:
-    - weblab
-    - instance
+# file: main.yml
+- include: dbservers.yml
+- include: schedulingservers.yml
+- include: webservers.yml

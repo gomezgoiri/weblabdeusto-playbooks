@@ -1,0 +1,47 @@
+---
+
+# file: webservers.yml
+    
+- name: Common tasks in all servers
+  hosts: web
+  sudo: true
+  roles:
+    - common
+  tags:
+    - pre
+    - common
+
+- name: Install virtualenv
+  hosts: web
+  sudo: true
+  roles:
+    - brad.virtualenv
+  tags:
+    - python
+    - virtualenv
+
+- name: Install virtualenvwrapper
+  hosts: web
+  sudo: true
+  roles:
+    - virtualenvwrapper
+  tags:
+    - python
+    - virtualenvwrapper
+
+- name: Install weblab-deusto
+  hosts: web
+  roles:
+    - prepare-weblabenv
+  tags:
+    - weblab
+    - install
+
+- name: Create weblab-deusto instance
+  hosts: web
+  roles:
+    - weblab-apache
+    # replace by weblab-simple if you prefer a simpler WebLab installation
+  tags:
+    - weblab
+    - instance
