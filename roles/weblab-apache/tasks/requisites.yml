@@ -1,0 +1,35 @@
+---
+
+- name: Apache2 installation
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  
+  when: ansible_os_family == "Debian"
+  with_items:
+    - apache2
+    - apache2-mpm-worker
+    - python-mysqldb
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - apache
+    - apache2
+
+
+- name: MySQL client installation
+  apt:
+    pkg: "mysql-client"
+    state: present
+  sudo: True
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - mysql
+    - client
