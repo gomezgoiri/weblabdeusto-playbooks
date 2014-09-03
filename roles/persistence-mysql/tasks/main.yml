@@ -29,13 +29,25 @@
 
 - name: Create user for WebLab database
   mysql_user:
+    state=present
     name="{{ db_user }}"
     password="{{ db_password }}"
     priv="{{ db_name }}.*:ALL"
-    state=present
+    host="%" # any host, to ease different configurations, it should probably be restricted
   tags:
     - mysql
     - user
     - weblab
     - creation
     - create
+
+
+- name: Serve to other machines
+  replace: dest=/etc/mysql/my.cnf regexp="^bind-address\s*=\s*127.0.0.1$" replace="bind-address = 0.0.0.0"
+  sudo: True
+  tags:
+    - mysql
+    - configuration
+    - file
+  notify:
+    - restart mysql
