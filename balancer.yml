@@ -1,0 +1,20 @@
+---
+
+# file: balancer.yml
+    
+- name: Common tasks in all servers
+  hosts: balancer
+  sudo: true
+  roles:
+    - common
+  tags:
+    - pre
+    - common
+
+- name: HAProxy tasks
+  hosts: balancer
+  sudo: true
+  roles:
+    - haproxy
+  tags:
+    - haproxy

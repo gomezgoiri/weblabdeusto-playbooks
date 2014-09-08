@@ -12,4 +12,5 @@
 # file: main.yml
 - include: dbservers.yml
 - include: schedulingservers.yml
+- include: installer.yml
 - include: webservers.yml

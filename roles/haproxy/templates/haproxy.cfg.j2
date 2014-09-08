@@ -1,0 +1,39 @@
+global
+        log 127.0.0.1 local1 notice
+        #log loghost  local0 info
+        maxconn 4096
+        #chroot /usr/share/haproxy
+        daemon
+        user haproxy
+        group haproxy
+
+        # turn on stats unix socket
+        #stats socket {{ haproxy_admin_socket }} level admin
+
+defaults
+        log global
+        mode http
+        option httplog
+        option dontlognull
+        retries 3
+        maxconn 2000
+        contimeout 5000
+        clitimeout 50000
+        srvtimeout 50000
+
+frontend www
+   bind {{ haproxy_listen_address }}:{{ haproxy_listen_port }}
+   default_backend weblab-backend
+
+#backend weblab-backend
+#   balance {{ haproxy_balance_algorithm }}
+#   mode http
+#   server web web.weblab.fake.org:80 check
+
+backend weblab-backend
+#listen favorshare {{ haproxy_listen_address }}:{{ haproxy_listen_port }}
+   mode http
+   balance {{ haproxy_balance_algorithm }}
+{% for host in groups['web'] %}
+   server {{ host }} {{ hostvars[host]['ansible_ssh_host']}}:80 check
+{% endfor %}
