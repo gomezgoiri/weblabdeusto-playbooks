@@ -1,0 +1,33 @@
+---
+
+- name: Install NFS
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  sudo: True
+  when: ansible_os_family == "Debian"
+  with_items:
+    - nfs-kernel-server
+    - nfs-common
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - nfs
+    - server
+
+
+- name: Share folders
+  lineinfile: dest=/etc/exports regexp='^{{ item.folder }}' line="{{ item.line }}"
+  sudo: True
+  with_items:
+    - { folder: "{{ virtualenv_weblab_path }}", line: "{{ virtualenv_weblab_path }} 192.168.100.1/24(rw,no_root_squash,async)" }
+    - { folder: "{{ path }}", line: "{{ path }} 192.168.100.1/24(rw,no_root_squash,async)" }
+  notify:
+    - restart nfs
+  tags:
+    - shared
+    - folder
+    - nfs
+    - server

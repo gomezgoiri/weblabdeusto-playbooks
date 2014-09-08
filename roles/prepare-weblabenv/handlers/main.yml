@@ -1,0 +1,5 @@
+---
+
+- name: restart nfs
+  shell: "/etc/init.d/nfs-kernel-server restart" # apparently no service is available for nfs daemon
+  sudo: True
