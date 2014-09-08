@@ -11,31 +11,23 @@
     - pre
     - common
 
-- name: Install virtualenv
-  hosts: web
-  sudo: true
-  roles:
-    - brad.virtualenv
-  tags:
-    - python
-    - virtualenv
+#- name: Install virtualenv
+#  hosts: web
+#  sudo: true
+#  roles:
+#    - brad.virtualenv
+#  tags:
+#    - python
+#    - virtualenv
 
-- name: Install virtualenvwrapper
-  hosts: web
-  sudo: true
-  roles:
-    - virtualenvwrapper
-  tags:
-    - python
-    - virtualenvwrapper
-
-- name: Install weblab-deusto
-  hosts: web
-  roles:
-    - prepare-weblabenv
-  tags:
-    - weblab
-    - install
+#- name: Install virtualenvwrapper
+#  hosts: web
+#  sudo: true
+#  roles:
+#    - virtualenvwrapper
+#  tags:
+#    - python
+#    - virtualenvwrapper
 
 - name: Create weblab-deusto instance
   hosts: web

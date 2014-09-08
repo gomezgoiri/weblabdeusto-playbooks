@@ -7,3 +7,7 @@
 - name: restart weblab
   service: name=weblab state=restarted
   sudo: True
+
+- name: mount new
+  shell: "mount -a"
+  sudo: True

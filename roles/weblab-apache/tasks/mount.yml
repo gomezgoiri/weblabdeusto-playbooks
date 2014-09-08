@@ -1,0 +1,45 @@
+---
+
+- name: Install NFS
+  apt:
+    pkg: "nfs-common"
+    state: present
+  sudo: True
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - nfs
+
+- name: Create mount points
+  file: path="{{ item }}" state=directory
+  with_items:
+    - "{{ virtualenv_weblab_path }}"
+    - "{{ path }}"
+  tags:
+    - nfs
+    - mount
+    - folder
+    - create
+
+# TODO only if the lines are added notify will be called :-S
+# only one installer host, so we access through its 0 index
+- name: Mount folders
+  lineinfile:
+    dest: /etc/fstab
+    regexp: "^{{item.host}}:{{ item.sfolder }}"
+    line: "{{ item.host }}:{{ item.sfolder }} {{ item.mfolder }}  nfs  rw  0  0"
+  sudo: True
+  with_items:
+    - { host: "{{groups['installer'][0]}}", sfolder: "{{ virtualenv_weblab_path }}", mfolder: "{{ virtualenv_weblab_path }}" }
+    - { host: "{{groups['installer'][0]}}", sfolder: "{{ path }}", mfolder: "{{ path }}" }
+  notify:
+    - mount new
+  tags:
+    - nfs
+    - mount
+    - shared
+    - folder
+    - panto

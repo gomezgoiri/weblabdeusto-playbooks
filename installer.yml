@@ -1,0 +1,38 @@
+---
+
+# file: installer.yml
+
+- name: Common tasks in all servers
+  hosts: installer
+  sudo: true
+  roles:
+    - common
+  tags:
+    - pre
+    - common
+
+- name: Install virtualenv
+  hosts: installer
+  sudo: true
+  roles:
+    - brad.virtualenv
+  tags:
+    - python
+    - virtualenv
+
+- name: Install virtualenvwrapper
+  hosts: installer
+  sudo: true
+  roles:
+    - virtualenvwrapper
+  tags:
+    - python
+    - virtualenvwrapper
+
+- name: Install weblab-deusto
+  hosts: installer
+  roles:
+    - prepare-weblabenv
+  tags:
+    - weblab
+    - install

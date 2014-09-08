@@ -1,6 +1,8 @@
 ---
 
-- name: Delete posibly existing weblab instance
+# TODO decide if it's worth to install it in another shared "installation" folder
+
+- name: Delete possibly existing weblab instance
   # Another alternative is to pass "-f" or "--force" to weblab-admin.py, but IMHO this way is clearer
   file:  path={{weblab_installation_path}} state=absent
   # CAUTION: if the weblab_installation_path is removed and no conf file is created afterwards, apache2 might fail in the next restart
@@ -8,6 +10,7 @@
     - clean
     - weblab
     - instance
+
 
 # TODO We should ensure that only a host is present in "db group" otherwise, the first one will be selected
 - name: Create weblab instance
@@ -20,6 +23,7 @@
     - creation
     - weblab
     - instance
+
 
 - name: Copy weblab daemon configuration file
   copy: src=weblab.conf dest="{{daemon_conf_file}}" # owner=foo group=foo mode=0644
