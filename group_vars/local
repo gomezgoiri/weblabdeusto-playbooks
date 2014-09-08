@@ -14,3 +14,18 @@ db_user: "weblabdbuser"
 
 # NOTE: If you plan to use this installation seriously, please change the password and consider using Vault if you will version the resulting plan
 db_password: "wpasswd"
+
+
+
+# SHARED only by Web and Installer!
+
+# Virtualenv role settings (https://galaxy.ansible.com/list#/roles/347)
+virtualenv_version: 1.11.6
+
+
+# Details for weblab installation
+path: "/home/{{remote_user}}/weblab"
+
+virtualenv_name: "weblab"
+virtualenvwrapper_path: "/home/{{remote_user}}/.virtualenvs"
+virtualenv_weblab_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"
