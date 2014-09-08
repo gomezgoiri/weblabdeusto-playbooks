@@ -1,0 +1,32 @@
+# Inventory file for the simplest installation in a single machine
+
+# We know this from the Vagrantfile, but we could do dynamically
+web1.weblab.fake.org ansible_ssh_host=192.168.100.52
+web2.weblab.fake.org ansible_ssh_host=192.168.100.56
+scheduler.weblab.fake.org ansible_ssh_host=192.168.100.53
+db.weblab.fake.org ansible_ssh_host=192.168.100.54
+balancer.weblab.fake.org ansible_ssh_host=192.168.100.55
+installer.weblab.fake.org ansible_ssh_host=192.168.100.57
+
+[balancer]
+balancer.weblab.fake.org
+
+[installer]
+installer.weblab.fake.org
+
+[web]
+web[1:2].weblab.fake.org
+
+[scheduling]
+scheduler.weblab.fake.org
+
+[db]
+db.weblab.fake.org
+
+
+# Our env group is local
+[local:children]
+installer
+web
+scheduling
+db

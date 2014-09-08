@@ -1,0 +1,89 @@
+# Vagrantfile
+
+VAGRANTFILE_API_VERSION = "2"
+box = "ubuntu/trusty64"
+hostname = ".weblab.fake.org"
+
+machines = [
+  {
+    "hostname"=> "scheduler" + hostname,
+    "ip"=> "192.168.100.53",
+    "box"=> box,
+    "mem"=> 512,
+    "cpu"=> 2,
+    "ports"=> []
+  },
+  {
+    "hostname"=> "db" + hostname,
+    "ip"=> "192.168.100.54",
+    "box"=> box,
+    "mem"=> 512,
+    "cpu"=> 2,
+    "ports"=> []
+  },
+  {
+    "hostname"=> "balancer" + hostname,
+    "ip"=> "192.168.100.55",
+    "box"=> box,
+    "mem"=> 512,
+    "cpu"=> 2,
+    "ports"=> [ [80, 8000] ] # balancer
+  },
+  {
+    "hostname"=> "installer" + hostname,
+    "ip"=> "192.168.100.57",
+    "box"=> box,
+    "mem"=> 2048, # to complile weblab client
+    "cpu"=> 2,
+    "ports"=> []
+  },
+  {
+    "hostname"=> "web1" + hostname,
+    "ip"=> "192.168.100.52",
+    "box"=> box,
+    "mem"=> 512, # to complile weblab client
+    "cpu"=> 2,
+    "ports"=> []
+  },
+  {
+    "hostname"=> "web2" + hostname,
+    "ip"=> "192.168.100.56",
+    "box"=> box,
+    "mem"=> 512, # to complile weblab client
+    "cpu"=> 2,
+    "ports"=> []
+  }
+]
+
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  
+  machines.each do |i|
+    config.vm.define i["hostname"] do |machine|
+      machine.vm.box = i["box"]
+      machine.vm.host_name = i["hostname"]
+      machine.vm.network :private_network, ip: i["ip"]
+      
+      i["ports"].each do |port|
+        machine.vm.network :forwarded_port, guest: port[0], host: port[1]
+      end
+      
+      machine.vm.provider :virtualbox do |vb|
+        vb.customize [
+          "modifyvm", :id,
+          "--memory", i["mem"],
+          "--cpus", i["cpu"],
+          "--ioapic", "on",
+        ]
+      end
+      
+#      machine.vm.provision "ansible" do |ansible|
+#	ansible.playbook = "../../main.yml"
+#	ansible.inventory_path = "../../one_role_one_machine"
+#	ansible.verbose = "vvvv"
+#	ansible.host_key_checking = false
+#	ansible.limit = "local"
+#      end
+    end
+  end
+end
