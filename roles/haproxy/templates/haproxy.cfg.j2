@@ -1,14 +1,9 @@
 global
         log 127.0.0.1 local1 notice
-        #log loghost  local0 info
         maxconn 4096
-        #chroot /usr/share/haproxy
         daemon
         user haproxy
         group haproxy
-
-        # turn on stats unix socket
-        #stats socket {{ haproxy_admin_socket }} level admin
 
 defaults
         log global
@@ -25,15 +20,19 @@ frontend www
    bind {{ haproxy_listen_address }}:{{ haproxy_listen_port }}
    default_backend weblab-backend
 
-#backend weblab-backend
-#   balance {{ haproxy_balance_algorithm }}
-#   mode http
-#   server web web.weblab.fake.org:80 check
-
 backend weblab-backend
-#listen favorshare {{ haproxy_listen_address }}:{{ haproxy_listen_port }}
    mode http
+   stats enable
+   stats auth admin:password
+   stats hide-version
+   stats uri /stats
+   
    balance {{ haproxy_balance_algorithm }}
+   cookie weblabsessionid prefix indirect nocache
+   option forceclose
+{# We can simplify this using "host" for the prefix, but this way the cookie value is shorter. #}
+{% set count = 0 %}
 {% for host in groups['web'] %}
-   server {{ host }} {{ hostvars[host]['ansible_ssh_host']}}:80 check
+   server {{ host }} {{ hostvars[host]['ansible_ssh_host']}}:80 check cookie l{{ count }}
+{% set count = count + 1 %}
 {% endfor %}
