@@ -1,18 +1,18 @@
 # Inventory file for the simplest installation in a single machine
 
 # We know this from the Vagrantfile, but we could do dynamically
-web.weblab.fake.org ansible_ssh_host=192.168.100.52
-scheduler.weblab.fake.org ansible_ssh_host=192.168.100.53
-db.weblab.fake.org ansible_ssh_host=192.168.100.54
+web ansible_ssh_host=192.168.100.52
+scheduler ansible_ssh_host=192.168.100.53
+db ansible_ssh_host=192.168.100.54
 
 [web]
-web.weblab.fake.org
+web
 
 [scheduling]
-scheduler.weblab.fake.org
+scheduler
 
 [db]
-db.weblab.fake.org
+db
 
 
 # Our env group is local
