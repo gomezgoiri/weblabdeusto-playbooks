@@ -28,7 +28,7 @@ backend weblab-backend
    stats uri /stats
    
    balance {{ haproxy_balance_algorithm }}
-   cookie weblabsessionid prefix indirect nocache
+   cookie SERVERID insert indirect nocache
    option forceclose
 {# We can simplify this using "host" for the prefix, but this way the cookie value is shorter. #}
 {% set count = 0 %}
