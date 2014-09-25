@@ -3,7 +3,7 @@
 
 - name: Install HAproxy
   apt:
-    name: "haproxy={{ haproxy_version }}"
+    name: "haproxy"
     state: "present"
   tags:
     - apt
