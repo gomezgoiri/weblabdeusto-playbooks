@@ -7,7 +7,7 @@
   sudo: True
   when: ansible_os_family == "Debian"
   with_items:
-    - openjdk-6-jdk
+    - openjdk-7-jdk
     - git
   tags:
     - apt
@@ -16,7 +16,7 @@
     - debian
     - git
     - java
-    - openjdk-6-jdk
+    - openjdk
 
 
 - name: Clone weblab
