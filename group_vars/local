@@ -29,3 +29,6 @@ path: "/home/{{remote_user}}/weblab"
 virtualenv_name: "weblab"
 virtualenvwrapper_path: "/home/{{remote_user}}/.virtualenvs"
 virtualenv_weblab_path: "{{virtualenvwrapper_path}}/{{virtualenv_name}}"
+
+# Used in roles "prepare-weblabenv" (to grant access to NFS) and "weblab-apache" (to identify hosts)
+root_private_network: "192.168.100"

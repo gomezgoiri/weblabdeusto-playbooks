@@ -22,8 +22,8 @@
   lineinfile: dest=/etc/exports regexp='^{{ item.folder }}' line="{{ item.line }}"
   sudo: True
   with_items:
-    - { folder: "{{ virtualenv_weblab_path }}", line: "{{ virtualenv_weblab_path }} 192.168.100.1/24(rw,no_root_squash,async)" }
-    - { folder: "{{ path }}", line: "{{ path }} 192.168.100.1/24(rw,no_root_squash,async)" }
+    - { folder: "{{ virtualenv_weblab_path }}", line: "{{ virtualenv_weblab_path }} {{private_subnetwork}}(rw,no_root_squash,async)" }
+    - { folder: "{{ path }}", line: "{{ path }} {{private_subnetwork}}(rw,no_root_squash,async)" }
   notify:
     - restart nfs
   tags:

@@ -1,3 +1,4 @@
 ---
 
 url: "https://github.com/weblabdeusto/weblabdeusto.git"
+private_subnetwork: "{{root_private_network}}.1/24"
