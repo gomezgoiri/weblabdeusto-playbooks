@@ -24,8 +24,8 @@
     - folder
     - create
 
-# TODO only if the lines are added notify will be called :-S
-# only one installer host, so we access through its 0 index
+# FIXME Only when the lines are added notify will be called :-S
+# We assume that there is only one installer host (that's why we access through its 0 index).
 - name: Mount folders
   lineinfile:
     dest: /etc/fstab
@@ -33,8 +33,8 @@
     line: "{{ item.host }}:{{ item.sfolder }} {{ item.mfolder }}  nfs  rw  0  0"
   sudo: True
   with_items:
-    - { host: "{{groups['installer'][0]}}", sfolder: "{{ virtualenv_weblab_path }}", mfolder: "{{ virtualenv_weblab_path }}" }
-    - { host: "{{groups['installer'][0]}}", sfolder: "{{ path }}", mfolder: "{{ path }}" }
+    - { host: "{{groups['installation'][0]}}", sfolder: "{{ virtualenv_weblab_path }}", mfolder: "{{ virtualenv_weblab_path }}" }
+    - { host: "{{groups['installation'][0]}}", sfolder: "{{ path }}", mfolder: "{{ path }}" }
   notify:
     - mount new
   tags:
