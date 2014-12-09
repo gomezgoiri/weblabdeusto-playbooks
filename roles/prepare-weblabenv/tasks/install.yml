@@ -20,8 +20,8 @@
 
 
 - name: Clone weblab
-  git: repo={{ url }}
-       dest={{ path }}
+  git: repo="{{ url }}"
+       dest="{{ path }}"
   tags:
     - git
     - clone
@@ -29,8 +29,8 @@
     - weblab
 
 
-- name: create virtualenv folder
-  file: path=~/.virtualenvs
+- name: Create virtualenv folder
+  file: path="{{ virtualenvwrapper_path }}"
         state=directory
   tags:
     - virtualenv
@@ -44,7 +44,6 @@
     # it will inherit packages from the global site-packages 
     virtualenv_site_packages: yes
     name: "{{ path }}"
-    #chdir: ~/weblab
   tags:
     - virtualenv
     - pip
