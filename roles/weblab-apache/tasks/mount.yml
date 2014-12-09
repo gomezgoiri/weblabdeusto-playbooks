@@ -30,7 +30,7 @@
   lineinfile:
     dest: /etc/fstab
     regexp: "^{{item.host}}:{{ item.sfolder }}"
-    line: "{{ item.host }}:{{ item.sfolder }} {{ item.mfolder }}  nfs  rw  0  0"
+    line: "{{ item.host }}:{{ item.sfolder }} {{ item.mfolder }}  nfs4  defaults  0  0"
   sudo: True
   with_items:
     - { host: "{{groups['installation'][0]}}", sfolder: "{{ virtualenv_weblab_path }}", mfolder: "{{ virtualenv_weblab_path }}" }
