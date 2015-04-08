@@ -1,6 +1,6 @@
 # weblabdeusto-playbooks
 
-Ansible playbooks to install and manage WebLab-Deusto.
+Ansible playbooks to install and manage [WebLab-Deusto](https://github.com/weblabdeusto/weblabdeusto).
 
 
 
